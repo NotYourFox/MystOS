@@ -24,6 +24,9 @@ load:
 
     mov cx, bootmsg
     call print
+    mov ax, 0xFFFF
+    mov cx, 0x2000
+    call sleep
 
 .load_protected:
     cli
@@ -56,6 +59,26 @@ PrintChar:
     mov ah, 0Eh
     int 10h
     ret
+
+sleep:
+    push ax
+    push cx
+    sleep_loop:
+        cmp cx, 0
+        jz dec_ax
+        dec cx
+        jmp sleep_loop
+    dec_ax:
+        cmp ax, 0
+        jz finish_sleep
+        dec ax
+        pop cx
+        push cx
+        jmp sleep_loop
+    finish_sleep:
+        pop cx
+        pop ax
+        ret
 
 GDT_START:
 
@@ -146,7 +169,7 @@ ata_lba_read:
 
 
 
-bootmsg db 'HSBoot now loading HeliOS 0.1...', 0Ah, 0Dh, 0
+bootmsg db 'HSBoot now loading HeliOS 0.0.1-160145-alpha...', 0Ah, 0Dh, 0
 
 times 510-($-$$) db 0
 dw 0xAA55
