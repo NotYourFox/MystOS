@@ -1,7 +1,0 @@
-protect_init db 'Initialising GDT Protected Mode (32 bit)...', 0Ah, 0Dh, 0
-gdt_entry db 'Passing entries to descriptor table...', 0Ah, 0Dh, 0
-gdt_loaded db 'GDT has been loaded successfully, entering 32 bit Protected Mode...', 0Ah, 0Dh, 0
-cs_map db 'Code segment mapped at offset 0x08', 0Ah, 0Dh, 0
-ds_map db 'Data segment mapped at offset 0x10', 0Ah, 0Dh, 0
-enable_a20 db 'Enabling A20 Line...', 0Ah, 0Dh, 0
-protect_loaded db 'Successfully switched to Protected Mode!', 0Ah, 0Dh, 0
