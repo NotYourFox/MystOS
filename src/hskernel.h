@@ -9,6 +9,7 @@
 
 
 void kernel_main();
+void print(const char* str, char color);
 
 
 #endif

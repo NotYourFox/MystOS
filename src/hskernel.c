@@ -1,4 +1,6 @@
 #include "hskernel.h"
+#include "idt/idt.h"
+#include "io/io.h"
 
 //WRITING A PRINT FUNCTION IN VGA MODE
 
@@ -46,9 +48,14 @@ void put_char(int x, int y, char chr, char color){
 }
 
 void print_char(char chr, char color){
+    if (chr == '\n'){
+        col = 0;
+        row++;
+        return;
+    }
     put_char(col, row, chr, color);
     col++;
-    if (col >= VGA_WIDTH){
+    if (col >= VGA_WIDTH) {
         col = 0;
         row++;
     }
@@ -83,4 +90,5 @@ void term_init(){
 void kernel_main(){
     term_init();
     print("Starting HeliOS...", 15);
+    idt_init();
 }
