@@ -1,4 +1,4 @@
-#include "hskernel.h"
+#include "moskernel.h"
 #include "idt/idt.h"
 #include "io/io.h"
 
@@ -89,6 +89,6 @@ void term_init(){
 
 void kernel_main(){
     term_init();
-    print("Starting HeliOS...", 15);
+    print("Starting MystOS...", 15);
     idt_init();
 }

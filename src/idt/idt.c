@@ -1,10 +1,10 @@
 #include "idt.h"
-#include "hskernel.h"
+#include "moskernel.h"
 #include "config.h"
 #include "mem/mem.h"
 #include "io/io.h"
 
-struct int_desc idt_descriptors[HELIOS_INT_TOTAL]; //IDT descriptors array
+struct int_desc idt_descriptors[MYSTOS_INT_TOTAL]; //IDT descriptors array
 struct idtr_desc idtr_descriptor; //IDTR descriptor
 extern void idt_load(struct idtr_desc* ptr);
 extern void INT21H();
@@ -33,7 +33,7 @@ void idt_init(){
     idtr_descriptor.limit = sizeof(idt_descriptors) - 1; //Limit - Maximum addressable byte in table
     idtr_descriptor.base = (uint32_t) idt_descriptors; //IDT address
 
-    for (int i = 0; i < HELIOS_INT_TOTAL; i++){
+    for (int i = 0; i < MYSTOS_INT_TOTAL; i++){
         idt_set(i, no_int);
     }
 
