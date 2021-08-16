@@ -248,7 +248,7 @@ ata_lba_read:
         ret
 
 
-bootmsg db 'HSBoot now loading MystOS ', 0
+bootmsg db 'MOSBoot now loading MystOS ', 0
 newline db 0Ah, 0Dh, 0
 read_err_msg db 0Ah, 0Dh, 'Cluster read error!', 0
 times 510-($-$$) db 0
