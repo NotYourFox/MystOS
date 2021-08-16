@@ -2,10 +2,11 @@ FILES = ./build/hskernel.asm.o ./build/hskernel.o ./build/idt/idt.asm.o ./build/
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 
-all: ./bin/hsboot.bin ./bin/hskernel.bin $(FILES)
+all: ./bin/hsboot.bin ./bin/hskernel.bin ./version.txt $(FILES)
 	rm -rf ./bin/helios.bin
 	dd if=./bin/hsboot.bin >> ./bin/helios.bin
 	dd if=./bin/hskernel.bin >> ./bin/helios.bin
+	dd if=./version.txt >> ./bin/helios.bin
 	dd if=/dev/zero bs=512 count=128 >> ./bin/helios.bin
 
 ./bin/hskernel.bin: $(FILES)
@@ -38,4 +39,4 @@ clean:
 	rm -rf ./bin/hskernel.bin
 	rm -rf ./bin/helios.bin
 	rm -rf $(FILES)
-	rm -rf ./build/hskernel.o
+	rm -rf ./build/hsfkrnl.o

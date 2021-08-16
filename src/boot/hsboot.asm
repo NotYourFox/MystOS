@@ -22,7 +22,22 @@ load:
     mov sp, 0x00
     sti
 
+    call find_version_file
+
+    mov ah, 2
+    mov al, 1
+    mov ch, 0
+    mov dh, 0
+    mov bx, buffer
+    int 13h
+    jc read_err
+
     mov cx, bootmsg
+    call print
+    call find_version_text
+    mov cx, bx
+    call print
+    mov cx, newline
     call print
     mov ax, 0xFFFF
     mov cx, 0x2000
@@ -35,7 +50,66 @@ load:
     or eax, 0x1
     mov cr0, eax
     jmp CODE_SEG:load32
-    jmp $
+
+find_version_file:
+    push ax
+    push bx
+    push dx
+    mov cl, 1
+    .read_next:
+        mov ah, 2
+        mov al, 1
+        mov ch, 0
+        mov dh, 0
+        mov bx, buffer
+        int 13h
+        jc .next_cluster
+        mov ax, bx
+        .next_word:
+            cmp byte[bx], 0x76
+            je .cmp_next
+            .continue_finding:
+                push bx
+                sub bx, ax
+                cmp bx, 510
+                je .popbx
+                pop bx
+                inc bx
+                jmp .next_word
+        .cmp_next:
+            inc bx
+            cmp byte[bx], 0x2E
+            je .finish_fv
+            dec bx
+            jmp .continue_finding
+        .next_cluster:
+            inc cl
+            jmp .read_next
+        .popbx:
+            pop bx
+            jmp .next_cluster
+    .finish_fv:
+        pop dx
+        pop bx
+        pop ax
+        ret
+            
+find_version_text:
+    .next_word:
+        cmp byte[bx], 0x76
+        je .cmp_next
+        .continue_finding:
+            inc bx
+            jmp .next_word
+    .cmp_next:
+        inc bx
+        cmp byte[bx], 0x2E
+        je .finish_fvt
+        dec bx
+        jmp .continue_finding
+    .finish_fvt:
+        dec bx
+        ret
 
 print:
     push si
@@ -79,6 +153,13 @@ sleep:
         pop cx
         pop ax
         ret
+
+read_err:
+    mov cx, read_err_msg
+    call print
+    cli
+    hlt
+    ret
 
 GDT_START:
 
@@ -167,9 +248,10 @@ ata_lba_read:
         ret
 
 
-
-
-bootmsg db 'HSBoot now loading HeliOS 0.0.1-160145-alpha...', 0Ah, 0Dh, 0
-
+bootmsg db 'HSBoot now loading HeliOS ', 0
+newline db 0Ah, 0Dh, 0
+read_err_msg db 0Ah, 0Dh, 'Cluster read error!', 0
 times 510-($-$$) db 0
 dw 0xAA55
+
+buffer:
