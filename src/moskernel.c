@@ -1,6 +1,6 @@
 #include "moskernel.h"
 #include "idt/idt.h"
-#include "io/io.h"
+#include "mem/heap/kheap.h"
 
 //WRITING A PRINT FUNCTION IN VGA MODE
 
@@ -48,9 +48,13 @@ void put_char(int x, int y, char chr, char color){
 }
 
 void print_char(char chr, char color){
-    if (chr == '\n'){
+    if (chr == '\n'){ // new line
         col = 0;
         row++;
+        return;
+    }
+    if (chr == '\r'){ // carriage return (without clear)
+        col = 0;
         return;
     }
     put_char(col, row, chr, color);
@@ -88,7 +92,16 @@ void term_init(){
 }
 
 void kernel_main(){
-    term_init();
-    print("Starting MystOS...", 15);
+    term_init(); // clear screen
+    print("Starting MystOS...\n", 15);
+    kheap_init();
     idt_init();
+    void* ptr = kmalloc(50);
+    void* ptr2 = kmalloc(5000);
+    void* ptr3 = kmalloc(5600);
+    kfree(ptr);
+    void* ptr4 = kmalloc(50);
+    if (ptr || ptr2 || ptr3 || ptr4){
+        
+    }
 }

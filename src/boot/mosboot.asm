@@ -37,6 +37,8 @@ load:
     call find_version_text
     mov cx, bx
     call print
+    mov cx, dots
+    call print
     mov cx, newline
     call print
     mov ax, 0xFFFF
@@ -65,7 +67,7 @@ find_version_file:
         int 13h
         jc .next_cluster
         mov ax, bx
-        .next_word:
+        .next_byte:
             cmp byte[bx], 0x76
             je .cmp_next
             .continue_finding:
@@ -75,7 +77,7 @@ find_version_file:
                 je .popbx
                 pop bx
                 inc bx
-                jmp .next_word
+                jmp .next_byte
         .cmp_next:
             inc bx
             cmp byte[bx], 0x2E
@@ -95,12 +97,12 @@ find_version_file:
         ret
             
 find_version_text:
-    .next_word:
+    .next_byte:
         cmp byte[bx], 0x76
         je .cmp_next
         .continue_finding:
             inc bx
-            jmp .next_word
+            jmp .next_byte
     .cmp_next:
         inc bx
         cmp byte[bx], 0x2E
@@ -109,7 +111,22 @@ find_version_text:
         jmp .continue_finding
     .finish_fvt:
         dec bx
+        call truncate_linefeed
         ret
+
+truncate_linefeed:
+    push bx
+    .next_byte:
+        cmp byte[bx], 0x0A
+        je .truncate
+        .continue_finding:
+            inc bx
+            jmp .next_byte
+    .truncate:
+        mov byte[bx], 0
+        pop bx
+        ret
+
 
 print:
     push si
@@ -249,6 +266,7 @@ ata_lba_read:
 
 
 bootmsg db 'MOSBoot now loading MystOS ', 0
+dots db '...', 0
 newline db 0Ah, 0Dh, 0
 read_err_msg db 0Ah, 0Dh, 'Cluster read error!', 0
 times 510-($-$$) db 0
