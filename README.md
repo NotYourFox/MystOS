@@ -7,3 +7,6 @@
  ![GitHub last commit](https://img.shields.io/github/last-commit/NotYourFox/MystOS)
  
  > Simple lightweight OS written on NASM and C
+
+ ## Run
+ `qemu-system-x86_64 -hda ./bin/mystos.bin`
