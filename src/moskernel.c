@@ -1,6 +1,7 @@
 #include "moskernel.h"
 #include "idt/idt.h"
 #include "mem/heap/kheap.h"
+#include "config.h"
 
 //WRITING A PRINT FUNCTION IN VGA MODE
 
@@ -96,4 +97,5 @@ void kernel_main(){
     print("Starting MystOS...\n", 15);
     kheap_init();
     idt_init();
+    interrupt_flag(sti);
 }
