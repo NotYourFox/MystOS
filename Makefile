@@ -1,4 +1,4 @@
-FILES = ./build/moskernel.asm.o ./build/moskernel.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/mem/mem.o ./build/io/io.asm.o ./build/mem/heap/heap.o ./build/mem/heap/kheap.o
+FILES = ./build/moskernel.asm.o ./build/moskernel.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/mem/mem.o ./build/io/io.asm.o ./build/mem/heap/heap.o ./build/mem/heap/kheap.o ./build/mem/page/pagefile.o ./build/mem/page/pagefile.asm.o
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 
@@ -39,6 +39,12 @@ all: ./bin/mosboot.bin ./bin/moskernel.bin ./version.txt $(FILES)
 
 ./build/mem/heap/kheap.o: ./src/mem/heap/kheap.c
 	i686-elf-gcc $(INCLUDES) -I./src/mem/heap $(FLAGS) -std=gnu99 -c ./src/mem/heap/kheap.c -o ./build/mem/heap/kheap.o	
+
+./build/mem/page/pagefile.o: ./src/mem/page/pagefile.c
+	i686-elf-gcc $(INCLUDES) -I./src/mem/page $(FLAGS) -std=gnu99 -c ./src/mem/page/pagefile.c -o ./build/mem/page/pagefile.o	
+
+./build/mem/page/pagefile.asm.o: ./src/mem/page/pagefile.asm
+	nasm -f elf -g ./src/mem/page/pagefile.asm -o ./build/mem/page/pagefile.asm.o
 
 clean:
 	rm -rf ./bin/mosboot.bin

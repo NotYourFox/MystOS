@@ -1,5 +1,5 @@
 #include "heap.h"
-#include "status.h"
+#include "mem/status.h"
 #include "moskernel.h"
 #include "mem/mem.h"
 
