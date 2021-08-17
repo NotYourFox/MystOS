@@ -1,4 +1,7 @@
 # MystOS
+
+[![Join the chat at https://gitter.im/myst_os/community](https://badges.gitter.im/myst_os/community.svg)](https://gitter.im/myst_os/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
  ![GitHub language count](https://img.shields.io/github/languages/count/NotYourFox/MystOS)
  ![GitHub top language](https://img.shields.io/github/languages/top/NotYourFox/MystOS)
  ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/NotYourFox/MystOS)
