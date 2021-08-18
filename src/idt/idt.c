@@ -1,5 +1,5 @@
 #include "idt.h"
-#include "moskernel.h"
+#include "io/vgaio/vgaprint.h"
 #include "config.h"
 #include "mem/mem.h"
 #include "io/io.h"
