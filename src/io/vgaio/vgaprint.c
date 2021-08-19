@@ -71,12 +71,40 @@ size_t strlen(const char* str){
     return len;
 }
 
-void print(const char* str, char color){
+void print(const char* str){ // Default print (light gray)
+    size_t len = strlen(str);
+    for (int i = 0; i < len; i++){
+        print_char(str[i], 7);
+    }
+}
+
+void printc(const char* str, char color){
     size_t len = strlen(str);
     for (int i = 0; i < len; i++){
         print_char(str[i], color);
     }
 }
+// VGA COLORS TABLE
+//
+// value | color
+//-------+-----------------
+//   0   | BLACK
+//   1   | BLUE
+//   2   | GREEN
+//   3   | CYAN
+//   4   | RED
+//   5   | MAGENTA
+//   6   | BROWN
+//   7   | LIGHT GRAY
+//   8   | DARK GRAY
+//   9   | LIGHT BLUE
+//   10  | LIGHT GREEN
+//   11  | LIGHT CYAN
+//   12  | LIGHT RED
+//   13  | LIGHT MAGENTA
+//   14  | YELLOW
+//   15  | WHITE
+
 
 void clear(){
     video_mem = (uint16_t*)(0xB8000);

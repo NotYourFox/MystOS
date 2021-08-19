@@ -1,4 +1,4 @@
-FILES = ./build/moskernel.asm.o ./build/moskernel.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/mem/mem.o ./build/io/io.asm.o ./build/mem/heap/heap.o ./build/mem/heap/kheap.o ./build/mem/page/pagefile.o ./build/mem/page/pagefile.asm.o ./build/io/vgaio/vgaprint.o
+FILES = ./build/moskernel.asm.o ./build/moskernel.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/mem/mem.o ./build/io/io.asm.o ./build/mem/heap/heap.o ./build/mem/heap/kheap.o ./build/mem/page/pagefile.o ./build/mem/page/pagefile.asm.o ./build/io/vgaio/vgaprint.o ./build/disk/disk.o
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 
@@ -48,6 +48,9 @@ all: ./bin/mosboot.bin ./bin/moskernel.bin ./version.txt $(FILES)
 
 ./build/io/vgaio/vgaprint.o: ./src/io/vgaio/vgaprint.c
 	i686-elf-gcc $(INCLUDES) -I./src/io/vgaio/ $(FLAGS) -std=gnu99 -c ./src/io/vgaio/vgaprint.c -o ./build/io/vgaio/vgaprint.o	
+
+./build/disk/disk.o: ./src/disk/disk.c
+	i686-elf-gcc $(INCLUDES) -I./src/disk $(FLAGS) -std=gnu99 -c ./src/disk/disk.c -o ./build/disk/disk.o
 
 clean:
 	rm -rf ./bin/mosboot.bin

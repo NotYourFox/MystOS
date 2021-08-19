@@ -268,7 +268,7 @@ ata_lba_read:
 bootmsg db 'MOSBoot now loading MystOS ', 0
 dots db '...', 0
 newline db 0Ah, 0Dh, 0
-read_err_msg db 0Ah, 0Dh, 'Cluster read error!', 0
+read_err_msg db 0Ah, 0Dh, 'Sector read error!', 0
 times 510-($-$$) db 0
 dw 0xAA55
 

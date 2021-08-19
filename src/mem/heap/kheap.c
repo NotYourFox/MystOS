@@ -8,14 +8,14 @@ struct heap kernel_heap;
 struct heap_table kernel_heap_table;
 
 void kheap_init() {
-    int total_table_entries = MYSTOS_HEAP_TOTAL_SIZE / MYSTOS_HEAP_BLOCK_SIZE;
+    int total_table_entries = MYSTOS_HEAP_TOTAL_SIZE / MYSTOS_HEAP_BLOCK_SIZE; //Total heap blocks
     kernel_heap_table.entries = (HEAP_BLOCK_TABLE_ENTRY*)(MYSTOS_HEAP_TABLE_ADDRESS);
     kernel_heap_table.total = total_table_entries;
 
-    void* end = (void*)(MYSTOS_HEAP_ADDRESS + MYSTOS_HEAP_TOTAL_SIZE);
-    int res = heap_create(&kernel_heap, (void*)(MYSTOS_HEAP_ADDRESS), end, &kernel_heap_table);
-    if (res < 0) {
-        print("Failed to create heap!", 15);
+    void* end = (void*)(MYSTOS_HEAP_ADDRESS + MYSTOS_HEAP_TOTAL_SIZE); //End of heap
+    int res = heap_create(&kernel_heap, (void*)(MYSTOS_HEAP_ADDRESS), end, &kernel_heap_table); //Trying to create heap 
+    if (res < 0) { //Handle the error, if there is any.
+        print("Failed to create heap!");
     }
 }
 

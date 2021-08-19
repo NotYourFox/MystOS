@@ -14,13 +14,13 @@
 typedef unsigned char HEAP_BLOCK_TABLE_ENTRY;
 
 struct heap_table {
-    HEAP_BLOCK_TABLE_ENTRY* entries;
-    size_t total;
+    HEAP_BLOCK_TABLE_ENTRY* entries; //Heap table entries
+    size_t total; //Total blocks of heap
 };
 
 struct heap {
     struct heap_table* table;
-    void* saddr;
+    void* saddr; //Start address
 };
 
 int heap_create(struct heap* heap, void* ptr, void* end, struct heap_table* table);

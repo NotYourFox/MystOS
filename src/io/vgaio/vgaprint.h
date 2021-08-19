@@ -5,6 +5,7 @@
 #include "moskernel.h"
 
 void clear();
-void print(const char* str, char color);
+void printc(const char* str, char color);
+void print(const char* str);
 
 #endif
