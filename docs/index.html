@@ -31,16 +31,16 @@
 				<a href="./" class="logo">MystOS</a>
 			</div>
 			<div class="nav-item col">
-				<a href="#about" class="nav-link">О системе</a>
+				<a href="#about" class="nav-link">О&nbsp;системе</a>
 			</div>
 			<div class="nav-item col">
 				<a href="#download" class="nav-link">Скчать</a>
 			</div>
 			<div class="nav-item col">
-				<a href="https://github.com/NotYourFox/MystOS/" class="nav-link">GitHub</a>
+				<a href="#build" class="nav-link">Сборка</a>
 			</div>
 			<div class="nav-item col">
-				<a href="https://gitter.im/myst_os/community" class="nav-link">Чат на Gitter</a>
+				<a href="https://github.com/NotYourFox/MystOS/" class="nav-link">GitHub</a>
 			</div>
 		</header>
 		<main class="main">
@@ -58,7 +58,7 @@
 						<img alt="GitHub" src="https://img.shields.io/github/license/notyourfox/mystos">
 					</a>
 				</p>
-				<p>На данный момент система находится в разработке...</p>
+				<p>На данный момент система не умеет ничего.</p>
 
 			</div>
 			<div class="block">
@@ -75,7 +75,7 @@
 				</p>
 			</div>
 			<div class="block">
-				<h2>Сборка</h2>
+				<h2 id="build">Сборка</h2>
 				<p>Вам не хватает собранных файлов в репозитории? Тогда соберите систему самостоятельно.</p>
 				<p>Для начала установите кросс-компилятор при помощи скрипта из 
 				<a href="https://github.com/lordmilko/i686-elf-tools">репозитория</a>.</p>
@@ -89,16 +89,10 @@ export TARGET=i686-elf
 export PATH="$PREFIX/bin:$PATH"
 make all
 				</code></pre>
-				<p>Далее запустите build.sh, в папке bin будут свежие бинарники</p>
+				<p>Далее запустите build.sh, в папке bin будут свежие бинарники.</p>
 			</div>
 		</main>
-		<footer class="footer">
-			<div class="row">
-				<div class="col">
-					<div class="f-logo">MystOS</div>
-				</div>
-			</div>
-		</footer>
+		
 	</div>
 	
 
