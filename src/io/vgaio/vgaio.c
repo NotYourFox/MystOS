@@ -1,5 +1,6 @@
 #include "vgaio.h"
 #include "status.h"
+#include "mem/heap/kheap.h"
 
 //WRITING A PRINT FUNCTION IN VGA MODE
 
@@ -99,7 +100,7 @@ size_t strnlen(const char* str, int max){
 
 
 int isdigit(char c) {
-    return c >= 48 && c <= 57;
+    return c >= 0x30 && c <= 0x39;
 }
 
 int strtoint(char c){
@@ -113,10 +114,89 @@ char* strcpy(char* dest, const char* src){
     char* res = dest;
     while (*src != 0){
         *dest = *src;
-        src += 1;
-        dest += 1;
+        src++;
+        dest++;
     }
     *dest = 0x00;
+    return res;
+}
+
+int is_upper(char c){
+    return c >= 0x41 && c <= 0x5A;
+}
+
+int is_lower(char c){
+    return c >= 0x61 && c <= 0x7A;
+}
+
+char char_tolower(char c){
+    if(is_upper(c)){
+        return c + 0x20;
+    }
+    return c;
+}
+
+char char_toupper(char c){
+    if(is_lower(c)){
+        return c - 0x20;
+    }
+    return c;
+}
+
+char* tolower(char* str){
+    for (int i = 0; i < strlen(str); i++){
+        str[i] = char_tolower(str[i]);
+    }
+    return str;
+}
+
+char* toupper(char* str){
+    for (int i = 0; i < strlen(str); i++){
+        str[i] = char_toupper(str[i]);
+    }
+    return str;
+}
+
+char* strcat(char* dest, char* src){
+    char* res = kzalloc(10);
+    char* str1 = strcpy(res, dest);
+    char* ptr = str1 + strlen(str1);
+    while (*src != 0x00) {
+        *ptr++ = *src++;
+    }
+    *ptr = 0x00;
+    return res;
+}
+
+int find_char(char* str, const char c){
+    int i;
+    for (i = 0; i < strlen(str); i++){
+        if (str[i] == c){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int find(char* dest, const char* src){
+    char* ptr = dest;
+    int res = find_char(ptr, src[0]);
+    if (res < 0){
+        return -1;
+    }
+    ptr += res;
+    if (strlen(ptr) < strlen(src)){
+        res = -1;
+        return -1;
+    }
+    for (int i = 0; i < strlen(src); i++){
+        if (ptr[i] != src[i]){
+            res = find(ptr + i, src);
+            if (res < 0){
+                return -1;
+            }
+        }
+    }
     return res;
 }
 

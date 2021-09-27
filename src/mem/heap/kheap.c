@@ -15,7 +15,7 @@ void kheap_init() {
     void* end = (void*)(MYSTOS_HEAP_ADDRESS + MYSTOS_HEAP_TOTAL_SIZE); //End of heap
     int res = heap_create(&kernel_heap, (void*)(MYSTOS_HEAP_ADDRESS), end, &kernel_heap_table); //Trying to create heap 
     if (res < 0) { //Handle the error, if there is any.
-        print("Failed to create heap!");
+        panic("Failed to create heap!");
     }
 }
 

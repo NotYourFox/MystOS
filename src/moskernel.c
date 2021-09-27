@@ -10,10 +10,22 @@
 
 static struct paging_4gb_chunk* kernel_chunk = 0;
 
+void panic(const char* msg){
+    char* tmp = (char*)msg;
+    print("\nKernel panic - ");
+    print(tolower(tmp));
+    if (find(tmp, "!") < 0){
+        print("!");
+    }
+    print(" MystOS halted.");
+    while (1) {}
+}
+
 void kernel_main(){
     clear(); // Clear screen
     print("Starting MystOS...");
     kheap_init(); //Initialize the heap
+    panic("You Stupid");
     fs_init(); //Initialize the filesystems
     disks_init(); //Initialize the disks
     idt_init(); //Initialize the IDT
@@ -23,6 +35,6 @@ void kernel_main(){
     enable_paging();
 
     interrupt_flag(sti); //Allow interrupts
-    
+
     print("[+] Done!\n");
 }

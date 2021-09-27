@@ -5,6 +5,7 @@
 #include "mem/heap/kheap.h"
 #include "io/vgaio/vgaio.h"
 #include "fat/fat16.h"
+#include "moskernel.h"
 
 struct filesystem* filesystems[MYSTOS_MAX_FS];
 struct file_desc* file_descriptors[MYSTOS_MAX_DESCRIPTORS];
@@ -24,8 +25,7 @@ void insert_fs(struct filesystem* filesystem){
     struct filesystem** fs;
     fs = get_free_fs();
     if (!fs){
-        print("Kernel panic - could not insert filesystem! MystOS halted.");
-        while(1) {}
+        panic("Could not insert filesystem!");
     }
 
     *fs = filesystem;
