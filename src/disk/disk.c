@@ -3,6 +3,7 @@
 #include "mem/mem.h"
 #include "config.h"
 #include "status.h"
+#include "fs/fs.h"
 
 struct disk disk;
 
@@ -34,6 +35,8 @@ void disks_init(){
     memset(&disk, 0, sizeof(disk)); //Sets the required amount of memory with zeros
     disk.type = MYSTOS_DT_REAL;
     disk.sector_size = MYSTOS_SECTOR_SIZE;
+    disk.id = 0;
+    disk.filesystem = fs_resolve(&disk);
 }
 
 struct disk* get_disk(int index){ //This is just a test prototype of a disk abstraction

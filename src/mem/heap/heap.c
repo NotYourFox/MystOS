@@ -44,17 +44,19 @@ int heap_create(struct heap* heap, void* ptr, void* end, struct heap_table* tabl
 out:
     return res;
 }
+// Thanks for reading <3
 
 static uint32_t heap_align_value_to_upper (uint32_t val){ //Align the value provided in kmalloc to the upper block size (e.g. 100 to 4096, 5000 to 8192, and so on)
     if ((val % MYSTOS_HEAP_BLOCK_SIZE) == 0){
         return val; //If already aligned, return
     }
+    
     val = (val - (val % MYSTOS_HEAP_BLOCK_SIZE)); //We are taking the remainder of division by heap block size, and substracting it from the given value (5000 - 904 = 4096)
-    val += MYSTOS_HEAP_BLOCK_SIZE; //We aligned the kmalloc value to the lower block, so just add 1 block to it,
+    val += MYSTOS_HEAP_BLOCK_SIZE; //We aligned the kmalloc value to the lower block, so just add 1 block to it,             
     return val;
-}
-
-static int heap_get_entry_type(HEAP_BLOCK_TABLE_ENTRY entry){
+}                                                                                                                                   //xo-
+                                                                                                                                    //-x-
+static int heap_get_entry_type(HEAP_BLOCK_TABLE_ENTRY entry){                                                                       //oxo
     return entry & 0xF; //Free or taken, ignoring the other types
 }
 

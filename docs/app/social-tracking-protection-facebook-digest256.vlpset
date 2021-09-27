@@ -1,0 +1,81 @@
+<!--#set var="title" value="MystOS" -->
+<!--#include virtual="/parts/header.html" -->
+
+	<div class="container">
+		<header class="header row">
+			<div class="logo-container col">
+				<a href="./" class="logo">MystOS</a>
+			</div>
+			<div class="nav-item col">
+				<a href="#about" class="nav-link">О системе</a>
+			</div>
+			<div class="nav-item col">
+				<a href="#download" class="nav-link">Скчать</a>
+			</div>
+			<div class="nav-item col">
+				<a href="https://github.com/NotYourFox/MystOS/" class="nav-link">GitHub</a>
+			</div>
+			<div class="nav-item col">
+				<a href="https://gitter.im/myst_os/community" class="nav-link">Чат на Gitter</a>
+			</div>
+		</header>
+		<main class="main">
+			<div class="block">
+				<h2 id="about">О системе</h2>
+				<p><span class="accent">MystOS</span> - простая операцоинная система на ассемблере и Си</p>
+				<p>Создана больше для изучения работы операционной системы, чем для дела :)</p>
+				<p>
+					<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/notyourfox/mystos">
+					<a class="b-link" href="https://gitter.im/myst_os/community">
+						<img alt="Gitter" src="https://img.shields.io/gitter/room/myst_os/community">
+					</a>
+					<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/NotYourFox/MystOS">
+					<a href="https://github.com/NotYourFox/MystOS/blob/main/LICENSE" class="b-link">
+						<img alt="GitHub" src="https://img.shields.io/github/license/notyourfox/mystos">
+					</a>
+				</p>
+				<p>На данный момент система находится в разработке...</p>
+
+			</div>
+			<div class="block">
+				<h2 id="download">Скачивание и установка</h2>
+				<p>MystOS можно запустить как на виртуальной машине, так и на реальной (не советуем).</p>
+				<p>Собранная операционная система находится в <a href="https://github.com/NotYourFox/MystOS/tree/main/bin">папке</a> 
+				bin, а точнее - в файле <a href="https://github.com/NotYourFox/MystOS/blob/main/bin/mystos.bin?raw=true">mystos.bin</a>. Скопируйте его содержимое на флешку или еще куда-то, если хотите запустить систему
+				на реальной машине:
+				<div class="warning">Внимательно проверьте аргументы при использовании dd! Не зря dd зовут Disk Destroyer! Все на Ваш страх и риск!</div>
+				<pre><code class="language-bash">sudo dd if=./mystos.bin of=/флешка</code></pre>
+				
+				Или используйте этот файл как жесткий диск для эмулятора:
+				<pre><code class="language-bash">qemu-system-i386 -hda mystos.bin</code></pre>
+				</p>
+			</div>
+			<div class="block">
+				<h2>Сборка</h2>
+				<p>Вам не хватает собранных файлов в репозитории? Тогда соберите систему самостоятельно.</p>
+				<p>Для начала установите кросс-компилятор при помощи скрипта из 
+				<a href="https://github.com/lordmilko/i686-elf-tools">репозитория</a>.</p>
+				<p>Клонируйте репозиторий MystOS</p>
+				<pre><code class="language-bash">git clone https://github.com/NotYourFox/MystOS</code></pre>
+				<p>Отредактируйте файл build.sh</p>
+				<pre><code class="language-bash">
+#/bin/bash
+export PREFIX="$HOME/opt/cross" # путь к кросс-компилятору
+export TARGET=i686-elf
+export PATH="$PREFIX/bin:$PATH"
+make all
+				</code></pre>
+				<p>Далее запустите build.sh, в папке bin будут свежие бинарники</p>
+			</div>
+		</main>
+		<footer class="footer">
+			<div class="row">
+				<div class="col">
+					<div class="f-logo">MystOS</div>
+				</div>
+			</div>
+		</footer>
+	</div>
+	
+
+<!--#include virtual="/parts/footer.html" -->

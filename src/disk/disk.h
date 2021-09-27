@@ -8,6 +8,9 @@ typedef unsigned int DISK_TYPE;
 struct disk{
     DISK_TYPE type;
     int sector_size;
+    int id;
+    struct filesystem* filesystem;
+    void* fs_private; //Private filesystem data
 };
 
 struct disk* get_disk(int index);

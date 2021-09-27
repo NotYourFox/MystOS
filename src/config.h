@@ -10,6 +10,9 @@
 #define MYSTOS_HEAP_TABLE_ADDRESS 0x00007E00 //Real mode 480,5 KiB of usable conventional memory
 
 #define MYSTOS_SECTOR_SIZE 512
+#define MYSTOS_MAX_PATH_LEN 256
+#define MYSTOS_MAX_FS 12
+#define MYSTOS_MAX_DESCRIPTORS 512
 
 #define sti 1
 #define cli 0

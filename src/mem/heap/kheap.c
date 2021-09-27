@@ -1,7 +1,7 @@
 #include "kheap.h"
 #include "heap.h"
 #include "config.h"
-#include "io/vgaio/vgaprint.h"
+#include "io/vgaio/vgaio.h"
 #include "mem/mem.h"
 
 struct heap kernel_heap;
