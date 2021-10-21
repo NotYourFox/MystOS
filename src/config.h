@@ -13,6 +13,7 @@
 #define MYSTOS_MAX_PATH_LEN 256
 #define MYSTOS_MAX_FS 12
 #define MYSTOS_MAX_DESCRIPTORS 512
+#define MYSTOS_MAX_PATH 108
 
 #define sti 1
 #define cli 0

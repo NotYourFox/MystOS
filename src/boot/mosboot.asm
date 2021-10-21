@@ -42,20 +42,9 @@ load:
     mov sp, 0x00
     sti
 
-    call find_version_file
-
-    mov ah, 2
-    mov al, 1
-    mov ch, 0
-    mov dh, 0
-    mov bx, buffer
-    int 13h
-    jc read_err
-
     mov cx, bootmsg
     call print
-    call find_version_text
-    mov cx, bx
+    mov cx, version
     call print
     mov cx, dots
     call print
@@ -72,81 +61,6 @@ load:
     or eax, 0x1
     mov cr0, eax
     jmp CODE_SEG:load32
-
-find_version_file:
-    push ax
-    push bx
-    push dx
-    mov cl, 1
-    .read_next:
-        mov ah, 2
-        mov al, 1
-        mov ch, 0
-        mov dh, 0
-        mov bx, buffer
-        int 13h
-        jc .next_cluster
-        mov ax, bx
-        .next_byte:
-            cmp byte[bx], 0x76
-            je .cmp_next
-            .continue_finding:
-                push bx
-                sub bx, ax
-                cmp bx, 510
-                je .popbx
-                pop bx
-                inc bx
-                jmp .next_byte
-        .cmp_next:
-            inc bx
-            cmp byte[bx], 0x2E
-            je .finish_fv
-            dec bx
-            jmp .continue_finding
-        .next_cluster:
-            inc cl
-            jmp .read_next
-        .popbx:
-            pop bx
-            jmp .next_cluster
-    .finish_fv:
-        pop dx
-        pop bx
-        pop ax
-        ret
-            
-find_version_text:
-    .next_byte:
-        cmp byte[bx], 0x76
-        je .cmp_next
-        .continue_finding:
-            inc bx
-            jmp .next_byte
-    .cmp_next:
-        inc bx
-        cmp byte[bx], 0x2E
-        je .finish_fvt
-        dec bx
-        jmp .continue_finding
-    .finish_fvt:
-        dec bx
-        call truncate_linefeed
-        ret
-
-truncate_linefeed:
-    push bx
-    .next_byte:
-        cmp byte[bx], 0x0A
-        je .truncate
-        .continue_finding:
-            inc bx
-            jmp .next_byte
-    .truncate:
-        mov byte[bx], 0
-        pop bx
-        ret
-
 
 print:
     push si
@@ -191,12 +105,6 @@ sleep:
         pop ax
         ret
 
-read_err:
-    mov cx, read_err_msg
-    call print
-    cli
-    hlt
-    ret
 
 GDT_START:
 
@@ -227,6 +135,7 @@ GDT_END:
 GDT_DESCRIPTOR:
     dw GDT_END - GDT_START - 1
     dd GDT_START
+
 
 [BITS 32]
 
@@ -286,10 +195,9 @@ ata_lba_read:
 
 
 bootmsg db 'MOSBoot now loading MystOS ', 0
+version db 'v.0.0.9-28090011-alpha', 0
 dots db '...', 0
 newline db 0Ah, 0Dh, 0
 read_err_msg db 0Ah, 0Dh, 'Sector read error!', 0
 times 510-($-$$) db 0
 dw 0xAA55
-
-buffer:

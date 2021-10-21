@@ -37,7 +37,7 @@ static int get_drive_by_path(const char** path){
 
 static struct path_root* create_root(int drive_num){
     struct path_root* path_r = kzalloc(sizeof(struct path_root));
-    path_r -> drive = drive_num;
+    path_r -> drive_index = drive_num;
     path_r -> first = 0x00;
     return path_r;
 }

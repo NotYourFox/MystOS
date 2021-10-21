@@ -23,9 +23,8 @@ void panic(const char* msg){
 
 void kernel_main(){
     clear(); // Clear screen
-    print("Starting MystOS...");
+    print("Starting MystOS...\n");
     kheap_init(); //Initialize the heap
-    panic("You Stupid");
     fs_init(); //Initialize the filesystems
     disks_init(); //Initialize the disks
     idt_init(); //Initialize the IDT
@@ -36,5 +35,13 @@ void kernel_main(){
 
     interrupt_flag(sti); //Allow interrupts
 
-    print("[+] Done!\n");
+    int fd = fopen("0:/file.txt", "r");
+    if (fd){
+        printc("[+] ", 2);
+        print("Filesystem is present\n");
+    } else {
+        panic("Filesystem is not present!");
+    }
+    printc("[+] ", 2);
+    print("Done!\n");
 }

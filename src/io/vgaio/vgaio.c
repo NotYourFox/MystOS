@@ -83,6 +83,16 @@ size_t strnlen(const char* str, int max){
     return len;
 } 
 
+int strnlen_term(const char* str, int max, char terminator){
+    int len = 0;
+    for (len = 0; len < max; len++){
+        if (str[len] == 0 || str[len] == terminator){
+            break;
+        }
+    }
+    return len;
+}
+
 // ⣿⣿⣷⡁⢆⠈⠕⢕⢂⢕⢂⢕⢂⢔⢂⢕⢄⠂⣂⠂⠆⢂⢕⢂⢕⢂⢕⢂⢕⢂
 // ⣿⣿⣿⡷⠊⡢⡹⣦⡑⢂⢕⢂⢕⢂⢕⢂⠕⠔⠌⠝⠛⠶⠶⢶⣦⣄⢂⢕⢂⢕
 // ⣿⣿⠏⣠⣾⣦⡐⢌⢿⣷⣦⣅⡑⠕⠡⠐⢿⠿⣛⠟⠛⠛⠛⠛⠡⢷⡈⢂⢕⢂
@@ -108,6 +118,60 @@ int strtoint(char c){
         return -EINVARG;
     }
     return c - 0x30;
+}
+
+void reverse(char* str){
+    char* str2 = str;
+    char* res;
+    int i = strlen(str2);
+    while(*str++ != 0){
+        *res++ = str2[i--];
+    }
+    *res = 0x00;
+}
+
+size_t intlen(int num){
+    int res = 0;
+    if (num == 0){
+        res = 1;
+    }
+
+    while (num != 0){
+        res++;
+        num = num / 10;
+    }
+    return res;
+}
+
+char* inttostr(int num){
+    int i = 0;
+    char* str = kzalloc(intlen(num) + 1);
+    int isNegative = 0;
+  
+    if (num == 0){
+        str[i++] = '0';
+        str[i] = 0x00;
+        return str;
+    }
+
+    if (num < 0){
+        isNegative = 1;
+        num = -num;
+    }
+
+    while (num != 0){
+        int rem = num % 10;
+        str[i++] = rem + 0x30;
+        num = num / 10;
+    }
+
+    if (isNegative){
+        str[i++] = '-';
+    }
+
+    str[i] = 0x00;
+    reverse(str);
+    return str;
 }
 
 char* strcpy(char* dest, const char* src){
@@ -157,8 +221,8 @@ char* toupper(char* str){
     return str;
 }
 
-char* strcat(char* dest, char* src){
-    char* res = kzalloc(10);
+char* strcat(const char* dest, const char* src){
+    char* res = kzalloc(strlen(dest) + strlen(src) + 1);
     char* str1 = strcpy(res, dest);
     char* ptr = str1 + strlen(str1);
     while (*src != 0x00) {
@@ -166,6 +230,38 @@ char* strcat(char* dest, char* src){
     }
     *ptr = 0x00;
     return res;
+}
+
+int strncmp(const char* str1, const char* str2, int n){
+    unsigned char u1, u2;
+
+    while (n-- > 0){
+        u1 = (unsigned char)*str1++;
+        u2 = (unsigned char)*str2++;
+        if (u1 != u2){
+            return u1 - u2;
+        }
+        if (u1 == '\0'){
+            return 0;
+        }
+    }
+    return 0;
+}
+
+int istrncmp(const char* str1, const char* str2, int n){
+    unsigned char u1, u2;
+
+    while (n-- > 0){
+        u1 = (unsigned char)*str1++;
+        u2 = (unsigned char)*str2++;
+        if (u1 != u2 && char_tolower(u1) != char_tolower(u2)){
+            return u1 - u2;
+        }
+        if (u1 == '\0'){
+            return 0;
+        }
+    }
+    return 0;
 }
 
 int find_char(char* str, const char c){

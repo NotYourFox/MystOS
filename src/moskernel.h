@@ -10,4 +10,8 @@
 void kernel_main();
 void panic(const char* msg);
 
+#define error(value) (void*)value
+#define error_int(value) (int)value
+#define is_error(value) ((int)value < 0)
+
 #endif

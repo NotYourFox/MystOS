@@ -2,13 +2,15 @@ FILES = ./build/moskernel.asm.o ./build/moskernel.o ./build/disk/stream.o ./buil
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 
-all: ./bin/mosboot.bin ./bin/moskernel.bin ./version.txt $(FILES)
+all: ./bin/mosboot.bin ./bin/moskernel.bin $(FILES)
 	rm -rf ./bin/mystos.bin
 	dd if=./bin/mosboot.bin >> ./bin/mystos.bin
 	dd if=./bin/moskernel.bin >> ./bin/mystos.bin
-	dd if=./version.txt >> ./bin/mystos.bin
 	dd if=/dev/zero bs=1048576 count=16 >> ./bin/mystos.bin
-
+	sudo mount -t vfat ./bin/mystos.bin /mnt/d
+	sudo cp ./file.txt /mnt/d
+	sudo umount /mnt/d
+	
 ./bin/moskernel.bin: $(FILES)
 	i686-elf-ld -g -relocatable $(FILES) -o ./build/mosfkrnl.o
 	i686-elf-gcc $(FLAGS) -T ./src/linker.ld -o ./bin/moskernel.bin -ffreestanding -O0 -nostdlib ./build/mosfkrnl.o

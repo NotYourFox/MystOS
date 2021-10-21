@@ -39,7 +39,7 @@ struct file_desc{
 };
 
 void fs_init();
-int fopen(const char* filename, const char* mode);
+int fopen(const char* filename, const char* mode_str);
 void insert_fs(struct filesystem* filesystem);
 struct filesystem* fs_resolve(struct disk* disk);
 #endif

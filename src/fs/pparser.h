@@ -2,7 +2,7 @@
 #define PATHPARSER_H
 
 struct path_root{
-    int drive;
+    int drive_index;
     struct path_part* first;
 };
 

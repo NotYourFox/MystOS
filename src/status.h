@@ -6,5 +6,6 @@
 #define ENOMEM 3
 #define EBADPATH 4
 #define EOTHERFS 5
+#define EREADONLY 6
 
 #endif
