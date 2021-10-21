@@ -195,7 +195,7 @@ ata_lba_read:
 
 
 bootmsg db 'MOSBoot now loading MystOS ', 0
-version db 'v.0.0.9-28090011-alpha', 0
+version db 'v.0.0.9-21101741-alpha', 0
 dots db '...', 0
 newline db 0Ah, 0Dh, 0
 read_err_msg db 0Ah, 0Dh, 'Sector read error!', 0
