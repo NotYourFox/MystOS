@@ -65,6 +65,10 @@ void print_char(char chr, char color){
     }
 }
 
+int is_linefeed(){
+    return col == 0;
+}
+
 size_t strlen(const char* str){
     size_t len = 0;
     while(str[len]){
@@ -309,29 +313,6 @@ void printc(const char* str, char color){ // Colored print
         print_char(str[i], color);
     }
 }
-// VGA COLORS TABLE
-//
-// value | color
-//-------+-----------------
-//   0   | BLACK
-//   1   | BLUE
-//   2   | GREEN
-//   3   | CYAN
-//   4   | RED
-//   5   | MAGENTA
-//   6   | BROWN
-//   7   | LIGHT GRAY
-//   8   | DARK GRAY
-//   9   | LIGHT BLUE
-//   10  | LIGHT GREEN
-//   11  | LIGHT CYAN
-//   12  | LIGHT RED
-//   13  | LIGHT MAGENTA
-//   14  | YELLOW
-//   15  | WHITE
-//
-// https://www.fountainware.com/EXPL/vga_color_palettes.htm
-
 
 void clear(){
     video_mem = (uint16_t*)(0xB8000);

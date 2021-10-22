@@ -6,19 +6,75 @@
 #include "io/vgaio/vgaio.h"
 #include "disk/disk.h"
 #include "fs/pparser.h"
-#include "fs/fs.h"
+#include "fs/vfs.h"
 
 static struct paging_4gb_chunk* kernel_chunk = 0;
 
 void panic(const char* msg){
     char* tmp = (char*)msg;
-    print("\nKernel panic - ");
+    if(!is_linefeed()){
+        print("\n");
+    }
+    printc("[-] ", vga_red);
+    print("Kernel panic - ");
     print(tolower(tmp));
     if (find(tmp, "!") < 0){
         print("!");
     }
     print(" MystOS halted.");
+    interrupt_flag(cli);
     while (1) {}
+}
+
+void log(const char* msg, int res){
+    switch(res){
+        case LOG_OK:
+            printc("[+] ", vga_green);
+            print(strcat(msg, "\n"));
+            break;
+        case LOG_ERR:
+            printc("[-] ", vga_red);
+            print(strcat(msg, "\n"));
+            break;
+        case LOG_WARN:
+            printc("[!] ", vga_yellow);
+            print(strcat(msg, "\n"));
+            break;
+        case LOG_CHECK:
+            printc("[=] ", vga_lightblue);
+            print(strcat(msg, "\n"));
+            break;
+    }
+}
+
+void boot_log(){
+    int check = fopen("0:/file.txt", "r");
+    if (check){
+        log("Filesystem is present", LOG_OK);
+        char buf[strlen(FS_CHECK_FILE_CONTENTS)];
+        log("Testing filesystem R/W...", LOG_CHECK);
+        fseek(check, 6, SEEK_SET);
+        fread(check, strlen(FS_CHECK_FILE_CONTENTS), 1, buf);
+        struct file_stat stat;
+        fstat(check, &stat);
+        if (!strncmp(buf, FS_CHECK_FILE_CONTENTS, strlen(buf))){
+            log("Seek mode - OK", LOG_OK);
+            log("Read mode - OK", LOG_OK);
+        } else {
+            panic("R/W test failed!");
+        }
+        if (stat.filesize == FS_CHECK_FILE_SIZE){
+            log("Stat mode - OK", LOG_OK);
+        } else {
+            panic("R/W test failed!");
+        }
+        fclose(check);
+        log("Close - OK", LOG_OK);
+    } else {
+        panic("Filesystem is not present!");
+    }
+    print("\n");
+    log("Done!", LOG_OK);
 }
 
 void kernel_main(){
@@ -35,13 +91,5 @@ void kernel_main(){
 
     interrupt_flag(sti); //Allow interrupts
 
-    int fd = fopen("0:/file.txt", "r");
-    if (fd){
-        printc("[+] ", 2);
-        print("Filesystem is present\n");
-    } else {
-        panic("Filesystem is not present!");
-    }
-    printc("[+] ", 2);
-    print("Done!\n");
+    boot_log();
 }

@@ -18,4 +18,53 @@
 #define sti 1
 #define cli 0
 
+#define FS_CHECK_FILE_CONTENTS "_;RHx/,hh6S<.*mL3O7Xd^|[s8q-,T#;q*,"
+#define FS_CHECK_FILE_SIZE 42
+
+#define LOG_OK 0
+#define LOG_ERR 1
+#define LOG_WARN 2
+#define LOG_CHECK 3
+
+//Colors
+#define vga_black 0
+#define vga_blue 1
+#define vga_green 2
+#define vga_cyan 3
+#define vga_red 4
+#define vga_magenta 5
+#define vga_brown 6
+#define vga_lightgray 7
+#define vga_darkgray 8
+#define vga_lightblue 9
+#define vga_lightgreen 10
+#define vga_lightcyan 11
+#define vga_lightred 12
+#define vga_lightmagenta 13
+#define vga_yellow 14
+#define vga_white 15
+
+// VGA COLORS TABLE
+//
+// value | color
+//-------+-----------------
+//   0   | BLACK
+//   1   | BLUE
+//   2   | GREEN
+//   3   | CYAN
+//   4   | RED
+//   5   | MAGENTA
+//   6   | BROWN
+//   7   | LIGHT GRAY
+//   8   | DARK GRAY
+//   9   | LIGHT BLUE
+//   10  | LIGHT GREEN
+//   11  | LIGHT CYAN
+//   12  | LIGHT RED
+//   13  | LIGHT MAGENTA
+//   14  | YELLOW
+//   15  | WHITE
+//
+// https://www.fountainware.com/EXPL/vga_color_palettes.htm
+
 #endif

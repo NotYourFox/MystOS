@@ -7,5 +7,6 @@
 #define EBADPATH 4
 #define EOTHERFS 5
 #define EREADONLY 6
+#define EUNIMP 7
 
 #endif

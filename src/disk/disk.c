@@ -3,7 +3,7 @@
 #include "mem/mem.h"
 #include "config.h"
 #include "status.h"
-#include "fs/fs.h"
+#include "fs/vfs.h"
 
 struct disk disk;
 

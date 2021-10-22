@@ -5,6 +5,7 @@
 #include "moskernel.h"
 
 void clear();
+int is_linefeed();
 void printc(const char* str, char color);
 void print(const char* str);
 size_t strlen(const char* str);
