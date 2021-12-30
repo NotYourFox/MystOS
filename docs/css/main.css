@@ -9,6 +9,7 @@
 	--userfont: roboto-st, sans-serif;
 	--systemfont: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
 	--background: #2c2e43;
+	--bg2: #595260;
 }
 
 /* BOOTSTRAP SETTINGS SECTION */
@@ -62,16 +63,20 @@ body {
 .logo:hover {
 	color: var(--accent-dark);
 }
-
-#nav-burger span {
-	display: block;
-	width: 35px;
-	height: 5px;
-	margin: 6px 0;
-	background-color: var(--accent);
+/* NAVBAR */
+.nav-collapse {
+	position: fixed;
+	top: 20px;
+	left: 20px;
 }
 
-
+.nav-btn {
+	font-size: 30px;
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	display: none;
+}
 
 .warning {
 	color: #e42828;

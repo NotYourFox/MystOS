@@ -22,9 +22,11 @@
 
 	<link rel="stylesheet" href="libs/responsive-nav/responsive-nav.css">
 	<script src="libs/responsive-nav/responsive-nav.js"></script>
-
+	<!-- LIBRARIES -->
 	<link rel="stylesheet"
       href="//unpkg.com/@highlightjs/cdn-assets@11.3.1/styles/default.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
+
 	<script src="//unpkg.com/@highlightjs/cdn-assets@11.3.1/highlight.min.js"></script>
 
 </head>
@@ -34,12 +36,27 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-3 nav-box">
+				<span class="ti-menu nav-btn"></span>
 				<nav class="nav-collapse">
 					<ul class="nav_ul">
 						<li class="nav_li"><a href="/" class="logo">MystOS</a></li>
-						<li class="nav_li"><a href="#about" class="nav-link">О системе</a></li>
-						<li class="nav_li"><a href="#build" class="nav-link">Сборка</a></li>
-						<li class="nav_li"><a href="#installing" class="nav-link">Установка</a></li>
+						<li class="nav-li">
+							<a href="https://github.com/NotYourFox/MystOS" class="nav-link">
+								<span class="ti-github"></span> GitHub
+							</a>
+						</li>
+						<li class="nav_li">
+							<a href="#about" class="nav-link">О системе</a>
+						</li>
+						<li class="nav_li">
+							<a href="#build" class="nav-link">Сборка</a>
+						</li>
+						<li class="nav_li">
+							<a href="#installing" class="nav-link">Установка</a>
+						</li>
+						<li class="nav-li">
+							<a href="https://maxgrt.github.io/ny_timer/" class="nav-link">#НГ2022</a>
+						</li>
 						<li class="nav-li">
 							<a href="https://github.com/NotYourFox/MystOS/">
 								<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/NotYourFox/MystOS?style=social">
@@ -60,6 +77,7 @@
 					<p><span class="accent">MystOS</span> - простая операцоинная система на ассемблере и Си с открытым исходным кодом</p>
 					<p>Создана больше для изучения работы операционной системы, чем для дела :)</p>
 					<p>Уже реализована частичная поддержка ФС fat16</p>
+					
 				</div>
 				<div class="block" id="build">
 					<h2>Сборка</h2>
@@ -86,11 +104,6 @@
 					<pre><code class="language-bash">sudo dd if=./mystos.bin of=/флешка</code></pre>
 					<p>После этого рекомендуем удалить скачанный образ, ибо он может смутить программы восстановления дисков :)
 					</p>
-				</div>
-				<div class="block">
-					<h3>Ссылки</h3>
-					<a href="https://github.com/NotYourFox/MystOS">GitHub</a>
-					<a href="https://gitter.im/myst_os/community">Gitter</a>
 				</div>
 			</div>
 		</div>

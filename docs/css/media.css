@@ -22,7 +22,17 @@
 
 /* xs <= Small (sm) */
 @media (max-width : 576px) {
-
+	.nav-collapse {
+		background-color: var(--bg2);
+		z-index: 999;
+		border-radius: 5px;
+		padding: 10px;
+		display: none;
+	}
+	.nav-btn {
+		display: block;
+	}
+	
 }
 
 
