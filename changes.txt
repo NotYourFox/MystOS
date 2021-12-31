@@ -1,0 +1,21 @@
+1. Reimplemented a print, printc, log and strcat routines using stdarg.h
+Change:
+    void print(const char* str) -> void print(int num, ...)
+    void printc(const char* str, char color) -> void printc(int num, char color, ...)
+    void log(const char* msg, int type) -> void log(int num, int type, ...)
+    void strcat(const char* dest, const char* src) -> void strcat(int num, ...)
+    (num represents a number of optional arguments)
+
+2. Implemented strcut in vgaio.c (cuts a string by indexes)
+
+3. Implemented CMOS (RTC) driver
+
+4. Implemented a GDT reload to prepare for multitasking
+
+5. Preparing to implement SHA1 checksum algorithm
+
+6. Preparing to implement IRQ 0 (PIT) handler
+
+7. Preparing to implement a cpuinfo()
+
+8. Getting ready to implement ext2 filesystem support

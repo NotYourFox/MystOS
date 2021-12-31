@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #define MYSTOS_INT_TOTAL 512 //Total interrupts set
+#define MYSTOS_PIT_FREQ 100 //PIT frequency, Hz
 #define KERNEL_CODE_SEGMENT 0x08 //Code segment
 #define KERNEL_DATA_SEGMENT 0x10 //Data segment
 #define MYSTOS_HEAP_TOTAL_SIZE 104857600 //100 MB heap
@@ -15,16 +16,18 @@
 #define MYSTOS_MAX_DESCRIPTORS 512
 #define MYSTOS_MAX_PATH 108
 
+#define MYSTOS_TOTAL_GDT_SEGMENTS 3
+
 #define sti 1
 #define cli 0
 
-#define FS_CHECK_FILE_CONTENTS "_;RHx/,hh6S<.*mL3O7Xd^|[s8q-,T#;q*,"
-#define FS_CHECK_FILE_SIZE 42
+#define FS_CHECK_FILE_CONTENTS "https://bit.ly/33Q1Aix"
+#define FS_CHECK_FILE_SIZE 29
 
 #define LOG_OK 0
 #define LOG_ERR 1
 #define LOG_WARN 2
-#define LOG_CHECK 3
+#define LOG_NOTICE 3
 
 //Colors
 #define vga_black 0

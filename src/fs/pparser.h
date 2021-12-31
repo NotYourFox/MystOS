@@ -11,7 +11,7 @@ struct path_part{
     struct path_part* next;
 };
 
-struct path_root* parse(const char* path, const char* current_dir);
+struct path_root* parse_path(const char* path, const char* current_dir);
 void parser_free(struct path_root* root);
 
 #endif

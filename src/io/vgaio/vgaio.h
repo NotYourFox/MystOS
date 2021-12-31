@@ -2,12 +2,13 @@
 #define VGAIO_H
 
 #include <stdint.h>
+#include <stdarg.h>
 #include "moskernel.h"
 
 void clear();
 int is_linefeed();
-void printc(const char* str, char color);
-void print(const char* str);
+void printc(int num, char color, ...);
+void print(int num, ...);
 size_t strlen(const char* str);
 int isdigit(char c);
 int strtoint(char c);
@@ -15,7 +16,7 @@ char* inttostr(int num);
 size_t intlen(int num);
 size_t strnlen(const char* str, int max);
 char* strcpy(char* dest, const char* src);
-char* strcat (const char* str1, const char* str2);
+char* strcat (int num, ...);
 char* tolower (char* str);
 char* toupper (char* str);
 int find(char* dest, const char* src);
@@ -24,6 +25,9 @@ int strncmp(const char* str1, const char* str2, int n);
 int istrncmp(const char* str1, const char* str2, int n);
 char char_toupper(char c);
 char char_tolower(char c);
-void reverse(char* str);
+char* strrev(char* str);
+char* strcut(const char* sid, const char* fid);
+void log(int num, int res, ...);
+char* hex(long decimalnum);
 
 #endif

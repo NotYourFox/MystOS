@@ -1,4 +1,4 @@
-FILES = ./build/moskernel.asm.o ./build/moskernel.o ./build/disk/stream.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/mem/mem.o ./build/io/io.asm.o ./build/mem/heap/heap.o ./build/mem/heap/kheap.o ./build/mem/page/pagefile.o ./build/mem/page/pagefile.asm.o ./build/io/vgaio/vgaio.o ./build/disk/disk.o ./build/fs/pparser.o ./build/fs/vfs.o ./build/fs/fat/fat16.o
+FILES = ./build/moskernel.asm.o ./build/moskernel.o ./build/disk/stream.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/mem/mem.o ./build/io/io.asm.o ./build/mem/heap/heap.o ./build/mem/heap/kheap.o ./build/mem/page/pagefile.o ./build/mem/page/pagefile.asm.o ./build/io/vgaio/vgaio.o ./build/disk/disk.o ./build/fs/pparser.o ./build/fs/vfs.o ./build/fs/fat/fat16.o ./build/cmos/cmos.o ./build/cpu/cpu.asm.o ./build/cpu/cpu.o ./build/idt/irq/irq.o ./build/idt/irq/irq0.o ./build/gdt/gdt.o ./build/gdt/gdt.asm.o
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 
@@ -65,6 +65,27 @@ all: ./bin/mosboot.bin ./bin/moskernel.bin $(FILES)
 
 ./build/disk/stream.o: ./src/disk/stream.c
 	i686-elf-gcc $(INCLUDES) -I./src/disk $(FLAGS) -std=gnu99 -c ./src/disk/stream.c -o ./build/disk/stream.o
+
+./build/cmos/cmos.o: ./src/cmos/cmos.c
+	i686-elf-gcc $(INCLUDES) -I./src/cmos $(FLAGS) -std=gnu99 -c ./src/cmos/cmos.c -o ./build/cmos/cmos.o
+
+./build/idt/irq/irq.o: ./src/idt/irq/irq.c
+	i686-elf-gcc $(INCLUDES) -I./src/irq $(FLAGS) -std=gnu99 -c ./src/idt/irq/irq.c -o ./build/idt/irq/irq.o
+
+./build/idt/irq/irq0.o: ./src/idt/irq/irq0.c
+	i686-elf-gcc $(INCLUDES) -I./src/irq $(FLAGS) -std=gnu99 -c ./src/idt/irq/irq0.c -o ./build/idt/irq/irq0.o
+
+./build/cpu/cpu.asm.o: ./src/cpu/cpu.asm
+	nasm -f elf -g ./src/cpu/cpu.asm -o ./build/cpu/cpu.asm.o
+
+./build/cpu/cpu.o: ./src/cpu/cpu.c
+	i686-elf-gcc $(INCLUDES) -I./src/cpu $(FLAGS) -std=gnu99 -c ./src/cpu/cpu.c -o ./build/cpu/cpu.o
+
+./build/gdt/gdt.o: ./src/gdt/gdt.c
+	i686-elf-gcc $(INCLUDES) -I./src/gdt $(FLAGS) -std=gnu99 -c ./src/gdt/gdt.c -o ./build/gdt/gdt.o
+
+./build/gdt/gdt.asm.o: ./src/gdt/gdt.asm
+	nasm -f elf -g ./src/gdt/gdt.asm -o ./build/gdt/gdt.asm.o
 
 clean:
 	rm -rf ./bin/mosboot.bin

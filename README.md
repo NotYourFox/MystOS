@@ -10,6 +10,7 @@
  ![GitHub last commit](https://img.shields.io/github/last-commit/NotYourFox/MystOS)
  
  > Simple lightweight OS written in NASM and C
-
+ > Main binary file - ./bin/mystos.bin
+ > Symbol file (for debugging)- ./build/mosfkrnl.o, .text_addr = 0x100000`
  ## Run
  `qemu-system-i386 -hda ./bin/mystos.bin`

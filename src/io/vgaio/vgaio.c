@@ -1,6 +1,7 @@
 #include "vgaio.h"
 #include "status.h"
 #include "mem/heap/kheap.h"
+#include "config.h"
 
 //WRITING A PRINT FUNCTION IN VGA MODE
 
@@ -110,7 +111,7 @@ int strnlen_term(const char* str, int max, char terminator){
 // ⠌⢊⢂⢣⠹⣿⣿⣿⣿⣿⣿⣿⣿⣧⢐⢕⢕⢕⢕⢕⢅⣿⣿⣿⣿⡿⢋⢜⠠⠈
 // ⠄⠁⠕⢝⡢⠈⠻⣿⣿⣿⣿⣿⣿⣿⣷⣕⣑⣑⣑⣵⣿⣿⣿⡿⢋⢔⢕⣿⠠⠈
 // ⠨⡂⡀⢑⢕⡅⠂⠄⠉⠛⠻⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢋⢔⢕⢕⣿⣿⠠⠈
-// ⠄⠪⣂⠁⢕⠆⠄⠂⠄⠁⡀⠂⡀⠄⢈⠉⢍⢛⢛⢛⢋⢔⢕⢕⢕⣽⣿⣿⠠⠈
+// ⠄⠪⣂⠁⢕⠆⠄⠂⠄⠁⡀⠂⡀⠄⢈⠉⢍⢛⢛⢛⢋⢔⢕⢕⢕⣽⣿⣿⠠⠈g
 
 
 int isdigit(char c) {
@@ -124,14 +125,16 @@ int strtoint(char c){
     return c - 0x30;
 }
 
-void reverse(char* str){
-    char* str2 = str;
-    char* res;
-    int i = strlen(str2);
-    while(*str++ != 0){
-        *res++ = str2[i--];
+char* strrev(char* str){
+    char* res = str;
+    char ch;
+    int len = strlen(str);
+    for (int i = 0; i < len/2; i++){
+        ch = res[i];
+        res[i] = res[len-1-i];
+        res[len-1-i] = ch;
     }
-    *res = 0x00;
+    return res;
 }
 
 size_t intlen(int num){
@@ -143,6 +146,16 @@ size_t intlen(int num){
     while (num != 0){
         res++;
         num = num / 10;
+    }
+    return res;
+}
+
+char* strcut(const char* csid, const char* cfid){
+    char* sid = (char*) csid;
+    char* fid = (char*) cfid;
+    char* res;
+    while(sid++ != fid){
+        *res++ = *sid;
     }
     return res;
 }
@@ -174,7 +187,7 @@ char* inttostr(int num){
     }
 
     str[i] = 0x00;
-    reverse(str);
+    str = strrev(str);
     return str;
 }
 
@@ -225,7 +238,7 @@ char* toupper(char* str){
     return str;
 }
 
-char* strcat(const char* dest, const char* src){
+char* sstrcat(const char* dest, const char* src){
     char* res = kzalloc(strlen(dest) + strlen(src) + 1);
     char* str1 = strcpy(res, dest);
     char* ptr = str1 + strlen(str1);
@@ -233,6 +246,25 @@ char* strcat(const char* dest, const char* src){
         *ptr++ = *src++;
     }
     *ptr = 0x00;
+    return res;
+}
+
+char* vstrcat(int num, va_list argptr){
+    const char* src;
+    src = va_arg(argptr, const char*);
+    char* res = (char*) src;
+    num -= 1;
+    for (int i = 0; i < num; i++){
+       res = sstrcat((const char*) res, va_arg(argptr, const char*));
+    }
+    return res;
+}
+
+char* strcat(int num, ...){
+    va_list argptr;
+    va_start(argptr, num);
+    char* res = vstrcat(num, argptr);
+    va_end(argptr);
     return res;
 }
 
@@ -300,18 +332,106 @@ int find(char* dest, const char* src){
     return res;
 }
 
-void print(const char* str){ // Default print (light gray)
+char* hex(long decimalnum){
+    char* res;
+    if (decimalnum == 0){
+        res = "0x00";
+        goto out;
+    }
+    long quotient, remainder;
+    int i = 0;
+    char hexadecimalnum[100];
+    char* tmp;
+    quotient = decimalnum;
+    while (quotient != 0){
+        remainder = quotient % 16;
+        if (remainder < 10){
+            hexadecimalnum[i++] = 48 + remainder;
+        } else {
+            hexadecimalnum[i++] = 55 + remainder;
+        }
+        quotient = quotient / 16;
+    }
+    if (strlen(hexadecimalnum) == 1){
+        tmp = strcat(2, "0", hexadecimalnum);
+    } else {
+        tmp = strrev(hexadecimalnum);
+    }
+    res = strcat(2, "0x", tmp);
+out:
+    return res;
+}
+
+void sprint(const char* str){
     size_t len = strlen(str);
     for (int i = 0; i < len; i++){
         print_char(str[i], 7);
     }
 }
 
-void printc(const char* str, char color){ // Colored print
+void sprintc(const char* str, char color){
     size_t len = strlen(str);
     for (int i = 0; i < len; i++){
         print_char(str[i], color);
     }
+}
+
+void vprint(int num, va_list argptr){
+    const char* str;
+    for (int i = 0; i < num; i++){
+        str = va_arg(argptr, const char*);
+        sprint(str);
+    }
+}
+
+void vprintc(int num, char color, va_list argptr){
+    const char* str;
+    for (int i = 0; i < num; i++){
+        str = va_arg(argptr, const char*);
+        sprintc(str, color);
+    }
+}
+
+void print(int num, ...){ // Default print (light gray)
+    va_list argptr;
+    va_start(argptr, num);
+    vprint(num, argptr);
+    va_end(argptr);
+}
+
+void printc(int num, char color, ...){ // Colored print
+    va_list argptr;
+    va_start(argptr, color);
+    vprintc(num, color, argptr);
+    va_end(argptr);
+}
+
+void log(int num, int res, ...){
+    va_list argptr;
+    va_start(argptr, res);
+    switch(res){
+        case LOG_OK:
+            printc(1, vga_green, "[+] ");
+            vprint(num, argptr);
+            sprint("\n");
+            break;
+        case LOG_ERR:
+            printc(1, vga_red, "[-] ");
+            vprint(num, argptr);
+            sprint("\n");
+            break;
+        case LOG_WARN:
+            printc(1, vga_yellow, "[!] ");
+            vprint(num, argptr);
+            sprint("\n");
+            break;
+        case LOG_NOTICE:
+            printc(1, vga_lightblue, "[=] ");
+            vprint(num, argptr);
+            sprint("\n");
+            break;
+    }
+    va_end(argptr);
 }
 
 void clear(){

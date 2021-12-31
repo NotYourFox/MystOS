@@ -20,5 +20,6 @@ struct idtr_desc {
 
 void idt_init();
 void interrupt_flag(int flag);
+void idt_set(int inum, void* address);
 
 #endif

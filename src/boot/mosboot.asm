@@ -72,7 +72,7 @@ print:
         lodsb
         cmp al, 0
         jz finish_print
-        call PrintChar
+        call printChar
         jmp print_loop
     finish_print:
         pop ax
@@ -80,7 +80,7 @@ print:
         pop si
         ret
 
-PrintChar:
+printChar:
     mov ah, 0Eh
     int 10h
     ret
@@ -140,6 +140,16 @@ GDT_DESCRIPTOR:
 [BITS 32]
 
 load32:
+    ;Reset segment registers in 32-bit protected mode
+    mov ax, 0x10
+    mov ds, ax
+    mov ss, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ebp, 0x00280000
+    mov esp, ebp
+    ;Finish resetting registers
     mov eax, 1
     mov ecx, 128
     mov edi, 0x0100000
@@ -195,7 +205,7 @@ ata_lba_read:
 
 
 bootmsg db 'MOSBoot now loading MystOS ', 0
-version db 'v.0.0.9-21101741-alpha', 0
+version db 'v.0.0.16-010122_000000-alpha', 0
 dots db '...', 0
 newline db 0Ah, 0Dh, 0
 read_err_msg db 0Ah, 0Dh, 'Sector read error!', 0

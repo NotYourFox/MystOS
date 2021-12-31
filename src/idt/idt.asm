@@ -1,12 +1,12 @@
 section .asm
-
 extern INT21H_HANDLER
 extern no_int_handler
 
-global idt_load
+global load_idt
 global INT21H
 global no_int
 global interrupt_flag
+global int_ack
 
 interrupt_flag: ;Sets or clears the interrupts
     push ebp
@@ -24,7 +24,7 @@ interrupt_flag: ;Sets or clears the interrupts
         pop ebp
         ret
 
-idt_load: ;Loads the IDT. Args: struct idtr { base, limit }
+load_idt: ;Loads the IDT. Args: struct idtr { base, limit }
     push ebp
     mov ebp, esp
     mov ebx, [ebp+8]
@@ -32,15 +32,13 @@ idt_load: ;Loads the IDT. Args: struct idtr { base, limit }
     pop ebp
 	ret
 
-
-
 INT21H: ;Interrupt 21h handler
     cli
     pushad
     call INT21H_HANDLER
     popad
     sti
-    iret
+    iretd
 
 no_int: ;No interrupt handler
     cli
@@ -48,5 +46,5 @@ no_int: ;No interrupt handler
     call no_int_handler
     popad
     sti
-    iret
+    iretd
 

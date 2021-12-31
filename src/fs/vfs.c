@@ -80,8 +80,7 @@ struct filesystem* fs_resolve(struct disk* disk){
             break;
         }
     }
-    printc("[+] ", 2);
-    print(strcat(strcat(strcat(strcat("Resolved ", fs -> name), " on "), inttostr(disk -> id)), ":/\n"));
+    log(5, LOG_OK, "Resolved ", fs -> name, " on ", inttostr(disk -> id), ":/");
     if (!fs){
         panic("Could not resolve filesystem!");
     }
@@ -104,7 +103,7 @@ FILE_MODE get_file_mode_by_string(const char* str){
 
 int fopen(const char* filename, const char* mode_str){
     int res = 0;
-    struct path_root* root_path = parse(filename, NULL);
+    struct path_root* root_path = parse_path(filename, NULL);
     if (!root_path){
         res = -EINVARG;
         goto out;

@@ -25,7 +25,7 @@ static int validate_path_format(const char* filename){ //flp1, flp2; dsk1, dsk2;
     return (len >= 3 && isdigit(filename[0]) && memcmp((void*)&filename[1], ":/", 2) == 0);
 }
 
-static int get_drive_by_path(const char** path){
+static int get_drive_by_path(const char** path){ // /dev/dsk1/home/user/folder/file.txt
     if (!validate_path_format(*path)){
         return -EBADPATH;
     }
@@ -33,6 +33,17 @@ static int get_drive_by_path(const char** path){
     int drive_num = strtoint(*path[0]);
     *path += 3; //Add 3 bytes to skip the drive number
     return drive_num;
+    
+    // char* root = "/"; // dsk1/home/user/folder/file.txt
+    // *path += 1;
+    // int index = find("/", *path);
+    // char* device = strcut(*path, *path + index);
+    // *path += index;
+    // index = find("/", *path);
+    // char* drive = strcut(*path, *path + index);
+    // char* res = strcat(strcat(root, device), strcat(root, drive));
+    // *path += index;
+    // return res;
 }
 
 static struct path_root* create_root(int drive_num){
@@ -92,7 +103,7 @@ void parser_free(struct path_root* root){
     kfree(root);
 }
 
-struct path_root* parse(const char* path, const char* current_dir){
+struct path_root* parse_path(const char* path, const char* current_dir){
     int res = 0;
     const char* tmp_path = path;
     struct path_root* path_root = 0;
