@@ -4,6 +4,7 @@
 #include "mem/mem.h"
 #include "io/vgaio/vgaio.h"
 #include "status.h"
+// TODO
 // Path example: /dev/dsk1/home/user/desktop/folder/file.txt
 //                 ^   ^
 //      device prefix  |
@@ -30,7 +31,7 @@ static int get_drive_by_path(const char** path){ // /dev/dsk1/home/user/folder/f
         return -EBADPATH;
     }
 
-    int drive_num = strtoint(*path[0]);
+    int drive_num = strtoint_char(*path[0]);
     *path += 3; //Add 3 bytes to skip the drive number
     return drive_num;
     

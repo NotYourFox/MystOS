@@ -2,41 +2,46 @@
 #include "status.h"
 #include "mem/heap/kheap.h"
 #include "config.h"
+#include "mem/mem.h"
 
-//WRITING A PRINT FUNCTION IN VGA MODE
+#define VIDEO_MEMORY_START_ADDR 0xB8000
 
-//The video memory starts at 0xB8000 for colored displays and 0xB0000
-//for monochrome displays. We should load the video_mem pointer there.
+/*
+WRITING A PRINT FUNCTION IN VGA MODE
 
-//The simple array variable is a pointer to the first array object.  
-//The array index is just an offset in memory from that pointer.
-//So we can act with pointers like with an arrays, where the pointer
-//is the first object of an array
+The video memory starts at 0xB8000 for colored displays and 0xB0000
+for monochrome displays. We should load the video_mem pointer there.
 
-//Each char uses 2 bytes: a char byte and a color byte, so we should
-//put the symbol into the first of 2 bytes in the video memory, and
-//color into the second:
-//uint16_t* video_mem = (uint16_t*)(0xB8000);
-//video_mem[0] = char;
-//video_mem[1] = color;
-//which we can easily simplify to 0x<color_byte><char_byte> (respect
-//the endianness of x86!) For example: print('A', 3) will do:
-//video_mem[0] = 0x0341;
+The simple array variable is a pointer to the first array object.  
+The array index is just an offset in memory from that pointer.
+So we can act with pointers like with an arrays, where the pointer
+is the first object of an array
 
-//Let's write a make_char() function that will load a char into the
-//video memory. What it will do is return a flipped char code.
+Each char uses 2 bytes: a char byte and a color byte, so we should
+put the symbol into the first of 2 bytes in the video memory, and
+color into the second:
+uint16_t* video_mem = (uint16_t*)(0xB8000);
+video_mem[0] = char;
+video_mem[1] = color;
+which we can easily simplify to 0x<color_byte><char_byte> (respect
+the endianness of x86!) For example: print('A', 3) will do:
+video_mem[0] = 0x0341;
 
-//First of all, it shifts the color variable by 8 bits. 
-//Assume that the color is now 0x12 (0001 0010 in binary), and the 
-//symbol is 0x41 ('A'). After shifting, it will become 
-//0001 0010 0000 0000b, that equals 0x1200.
+Let's write a make_char() function that will load a char into the
+video memory. What it will do is return a flipped char code.
 
-//So, the color code shifted 8 bits, leaving two zeros behind
-//The first part is complete. Now we need to set the symbol code. To
-//do it, we need to simply OR it with our symbol code, so the empty
-//bytes will be filled with it. The function result will be 0x1241.
+First of all, it shifts the color variable by 8 bits. 
+Assume that the color is now 0x12 (0001 0010 in binary), and the 
+symbol is 0x41 ('A'). After shifting, it will become 
+0001 0010 0000 0000b, that equals 0x1200.
 
-uint16_t* video_mem = 0;
+So, the color code shifted 8 bits, leaving two zeros behind
+The first part is complete. Now we need to set the symbol code. To
+do it, we need to simply OR it with our symbol code, so the empty
+bytes will be filled with it. The function result will be 0x1241.
+*/
+
+uint16_t* video_mem = 0; //We will set it in clear() function.
 uint16_t col = 0;
 uint16_t row = 0;
 
@@ -46,6 +51,45 @@ uint16_t make_char(char chr, char color){
 
 void put_char(int x, int y, char chr, char color){
     video_mem[(y * VGA_WIDTH) + x] = make_char(chr, color);
+}
+
+int check_screen_overflow(){
+    if (row == VGA_HEIGHT){
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+void clear_row(int i){
+    for(int x = 0; x < VGA_WIDTH; x++){
+        put_char(x, i, ' ', 7);
+    }
+}
+
+void copy_row(int dest, int src){
+    int row_bytes = 2 * VGA_WIDTH; //bytes in 1 row
+    void* res = kzalloc(row_bytes);
+    char color;
+    char c;
+    int x = 0;
+    memcpy(res, video_mem + (src * VGA_WIDTH), row_bytes);
+    for (int i = 0; i < row_bytes; i += 2){
+        c = *((char*)res + i);
+        color = *((char*)res + i + 1);
+        put_char(x, dest, c, color);
+        x++;
+    }
+}
+
+void scroll_down_on_screen_overflow(){
+    for (int i = 0; i < VGA_HEIGHT; i++){
+        clear_row(i);
+        if (i != VGA_HEIGHT - 1){
+            copy_row(i, i + 1);
+        }
+    }
+    row -= 1;
 }
 
 void print_char(char chr, char color){
@@ -111,18 +155,51 @@ int strnlen_term(const char* str, int max, char terminator){
 // ⠌⢊⢂⢣⠹⣿⣿⣿⣿⣿⣿⣿⣿⣧⢐⢕⢕⢕⢕⢕⢅⣿⣿⣿⣿⡿⢋⢜⠠⠈
 // ⠄⠁⠕⢝⡢⠈⠻⣿⣿⣿⣿⣿⣿⣿⣷⣕⣑⣑⣑⣵⣿⣿⣿⡿⢋⢔⢕⣿⠠⠈
 // ⠨⡂⡀⢑⢕⡅⠂⠄⠉⠛⠻⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢋⢔⢕⢕⣿⣿⠠⠈
-// ⠄⠪⣂⠁⢕⠆⠄⠂⠄⠁⡀⠂⡀⠄⢈⠉⢍⢛⢛⢛⢋⢔⢕⢕⢕⣽⣿⣿⠠⠈g
+// ⠄⠪⣂⠁⢕⠆⠄⠂⠄⠁⡀⠂⡀⠄⢈⠉⢍⢛⢛⢛⢋⢔⢕⢕⢕⣽⣿⣿⠠⠈
 
 
 int isdigit(char c) {
     return c >= 0x30 && c <= 0x39;
 }
 
-int strtoint(char c){
+int strtoint_char(char c){
     if (!(isdigit(c))){
         return -EINVARG;
     }
     return c - 0x30;
+}
+
+int pow(int n, int exp){
+    int res = 1;
+    for (int i = exp; i > 0; i--){
+        res *= n;
+    }
+    return res;
+}
+
+int strtoint(char* str){
+    char* s = str;
+    int isNegative = 0;
+    if (*s == '-'){
+        isNegative = 1;
+    }
+    int exp = strlen(str) - 1;
+    int multiplier;
+    int res = 0;
+    int resc;
+    while (*s++ != 0x00){
+        multiplier = pow(10, exp);
+        resc = strtoint_char(*s);
+        if (resc < 0){
+            return -EINVARG;
+        }
+        res += resc * multiplier;
+        exp--;
+    }
+    if (isNegative){
+        res *= -1;
+    }
+    return res;
 }
 
 char* strrev(char* str){
@@ -367,6 +444,9 @@ void sprint(const char* str){
     for (int i = 0; i < len; i++){
         print_char(str[i], 7);
     }
+    // if (check_screen_overflow()){
+    //     scroll_down_on_screen_overflow();
+    // }
 }
 
 void sprintc(const char* str, char color){
@@ -374,6 +454,9 @@ void sprintc(const char* str, char color){
     for (int i = 0; i < len; i++){
         print_char(str[i], color);
     }
+    // if (check_screen_overflow()){
+    //     scroll_down_on_screen_overflow();
+    // }
 }
 
 void vprint(int num, va_list argptr){
@@ -382,6 +465,9 @@ void vprint(int num, va_list argptr){
         str = va_arg(argptr, const char*);
         sprint(str);
     }
+    // if (check_screen_overflow()){
+    //     scroll_down_on_screen_overflow();
+    // }
 }
 
 void vprintc(int num, char color, va_list argptr){
@@ -390,9 +476,15 @@ void vprintc(int num, char color, va_list argptr){
         str = va_arg(argptr, const char*);
         sprintc(str, color);
     }
+    // if (check_screen_overflow()){
+    //     scroll_down_on_screen_overflow();
+    // }
 }
 
 void print(int num, ...){ // Default print (light gray)
+    if (check_screen_overflow()){
+       scroll_down_on_screen_overflow();
+    }
     va_list argptr;
     va_start(argptr, num);
     vprint(num, argptr);
@@ -400,6 +492,9 @@ void print(int num, ...){ // Default print (light gray)
 }
 
 void printc(int num, char color, ...){ // Colored print
+    if (check_screen_overflow()){
+        scroll_down_on_screen_overflow();
+    }
     va_list argptr;
     va_start(argptr, color);
     vprintc(num, color, argptr);
@@ -435,7 +530,7 @@ void log(int num, int res, ...){
 }
 
 void clear(){
-    video_mem = (uint16_t*)(0xB8000);
+    video_mem = (uint16_t*)(VIDEO_MEMORY_START_ADDR);
     row = 0;
     col = 0;
     for (int y = 0; y < VGA_HEIGHT; y++){

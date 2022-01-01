@@ -7,11 +7,10 @@
 
 void clear();
 int is_linefeed();
-void printc(int num, char color, ...);
-void print(int num, ...);
 size_t strlen(const char* str);
 int isdigit(char c);
-int strtoint(char c);
+int strtoint(char* str);
+int strtoint_char(char c);
 char* inttostr(int num);
 size_t intlen(int num);
 size_t strnlen(const char* str, int max);
@@ -29,5 +28,11 @@ char* strrev(char* str);
 char* strcut(const char* sid, const char* fid);
 void log(int num, int res, ...);
 char* hex(long decimalnum);
+void sprint(const char* str);
+void vprint(int num, va_list argptr);
+void sprintc(const char* str, char color);
+void vprintc(int num, char color, va_list argptr);
+void printc(int num, char color, ...);
+void print(int num, ...);
 
 #endif

@@ -8,7 +8,7 @@
 #include "fs/pparser.h"
 #include "fs/vfs.h"
 #include "cmos/cmos.h"
-//#include "cpu/cpu.h"
+// #include "cpu/cpu.h"
 #include "idt/irq/irq.h"
 #include "gdt/gdt.h"
 #include "mem/mem.h"
@@ -98,6 +98,21 @@ void kernel_main(){
 
     log(1, LOG_OK, "System initialisation complete.");
     //print(2, cpuinfo(), "\n");
+    int color;
+    int x;
+    for (int i = 0; i < 140; i++) {
+        x = i % 7;
+        switch(x){
+            case 0: color = vga_lightred; break;
+            case 1: color = vga_brown; break;
+            case 2: color = vga_yellow; break;
+            case 3: color = vga_lightgreen; break;
+            case 4: color = vga_lightcyan; break;
+            case 5: color = vga_lightblue; break;
+            case 6: color = vga_lightmagenta; break;
+        }
+        printc(2, color, inttostr(i), " IT WORKS!!!!!!!!!!!!!!!!!!\n");
+    }
     log(1, LOG_OK, "Done!");
     printc(1, vga_yellow, "Happy New Year 2022!");
 }
