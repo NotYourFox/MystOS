@@ -30,6 +30,7 @@ void insert_fs(struct filesystem* filesystem){
     }
 
     *fs = filesystem;
+    log(3, LOG_NOTICE, "Inserted the ", filesystem -> name, " filesystem.");
 }
 
 static void static_load(){
@@ -44,6 +45,7 @@ void fs_load(){
 void fs_init(){
     memset(file_descriptors, 0, sizeof(file_descriptors));
     fs_load();
+    log(1, LOG_OK, "Filesystem initialisation process complete.");
 }
 
 static int new_file_descriptor(struct file_desc** desc_out){

@@ -7,7 +7,7 @@ void load_gdt(struct gdt* gdt, int size);
 
 void gdt_load(struct gdt* gdt, int size){
     load_gdt(gdt, size);
-    log(1, LOG_OK, "Successfully loaded the GDT");
+    log(1, LOG_OK, "GDT reinitialization process complete.");
 }
 
 void encodeGdtEntry(uint8_t* target, struct gdt_structured src){

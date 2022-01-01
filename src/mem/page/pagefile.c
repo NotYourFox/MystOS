@@ -1,12 +1,19 @@
 #include "pagefile.h"
 #include "mem/heap/kheap.h"
 #include "status.h"
+#include "config.h"
 
 //What on earth is this hell? I cannot comment it! Pls help
+void asm_enable_paging();
 
 void paging_load_dir(uint32_t* page_dir);
 
 static uint32_t* current_dir = 0;
+
+void enable_paging(){
+    asm_enable_paging();
+    log(1, LOG_OK, "Paging has been enabled successfully.");
+}
 
 struct paging_4gb_chunk* paging_new_4gb(uint8_t flags){
     uint32_t* page_dir = kzalloc(sizeof(uint32_t) * PAGING_TOTAL_ENTRIES_PER_TABLE); //Kzalloc the required amount of bytes (each entry is uint32_t)
@@ -21,6 +28,7 @@ struct paging_4gb_chunk* paging_new_4gb(uint8_t flags){
     }
     struct paging_4gb_chunk* chunk_4gb = kzalloc(sizeof(struct paging_4gb_chunk));
     chunk_4gb -> dir_entry = page_dir; //chunk_4gb will contain our page directory
+    log(1, LOG_OK, "Paging chunk initialization complete (4 GB).");
     return chunk_4gb; //Returning the directory we defined
 }
 

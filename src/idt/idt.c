@@ -15,7 +15,7 @@ extern void no_int();
 
 void idt_load(struct idtr_desc* ptr){
     load_idt(ptr);
-    log(1, LOG_OK, "Succesfully loaded the IDT");
+    log(1, LOG_OK, "IDT has been loaded successfully.");
 }
 
 void INT21H_HANDLER(){
@@ -35,7 +35,7 @@ void idt_set(int inum, void* address){
     desc -> type_attr = 0xEE; //Type: 0xE (32-bit interrupt gate); Attr: 0xE (1110b)
     desc -> offset_2 = (uint32_t) address >> 16; //Offset bits 16-31 (0-15 bits truncated)
     if (address != no_int){
-        log(2, LOG_OK, "Successfuly set the interrupt ", hex(inum));
+        log(3, LOG_OK, "The interrupt ", hex(inum), " has been set successfully.");
     }
 }
 
@@ -52,5 +52,7 @@ void idt_init(){
     IRQs_init();
     idt_set(0x21, INT21H); //Assembly interrupt handler address (21h)
     idt_load(&idtr_descriptor); //Assembly function to load IDT (LIDT instruction). Accepts the address of table and a maximum addressable byte.
+    log(1, LOG_OK, "IDT initialisation process complete.");
 }
+
 

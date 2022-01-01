@@ -3,7 +3,8 @@
 section .asm
 
 global paging_load_dir
-global enable_paging
+global asm_enable_paging
+extern log
 
 paging_load_dir:
     push ebp
@@ -13,7 +14,7 @@ paging_load_dir:
     pop ebp
     ret
 
-enable_paging:
+asm_enable_paging:
     push ebp
     mov ebp, esp
     mov eax, cr0

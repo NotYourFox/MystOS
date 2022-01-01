@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include "io/vgaio/vgaio.h"
 
 #define PAGING_CACHE_DISABLED 0b00010000
 #define PAGING_WRITE_THROUGH 0b00001000

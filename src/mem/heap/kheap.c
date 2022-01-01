@@ -17,6 +17,7 @@ void kheap_init() {
     if (res < 0) { //Handle the error, if there is any.
         panic("Failed to create heap!");
     }
+    log(1, LOG_OK, "Heap initialisation process complete.");
 }
 
 void* kmalloc(size_t size){

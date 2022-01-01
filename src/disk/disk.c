@@ -4,6 +4,7 @@
 #include "config.h"
 #include "status.h"
 #include "fs/vfs.h"
+#include "io/vgaio/vgaio.h"
 
 struct disk disk;
 
@@ -37,6 +38,7 @@ void disks_init(){
     disk.sector_size = MYSTOS_SECTOR_SIZE;
     disk.id = 0;
     disk.filesystem = fs_resolve(&disk);
+    log(1, LOG_OK, "Disks initialisation process complete.");
 }
 
 struct disk* get_disk(int index){ //This is just a test prototype of a disk abstraction

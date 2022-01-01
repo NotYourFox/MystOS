@@ -16,7 +16,7 @@
 #define MYSTOS_MAX_DESCRIPTORS 512
 #define MYSTOS_MAX_PATH 108
 
-#define MYSTOS_TOTAL_GDT_SEGMENTS 3
+#define MYSTOS_TOTAL_GDT_SEGMENTS 6
 
 #define sti 1
 #define cli 0
