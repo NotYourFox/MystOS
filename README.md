@@ -1,4 +1,4 @@
-# MystOS
+# MystOS [discontinued]
 
 [![Join the chat at https://gitter.im/myst_os/community](https://badges.gitter.im/myst_os/community.svg)](https://gitter.im/myst_os/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
